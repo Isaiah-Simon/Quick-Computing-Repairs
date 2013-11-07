@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Video Game Survey</title>
+<title>Quick Computing Repairs</title>
 <meta charset="utf-8">
 <meta name="author" content="Isaiah Simon">
-<meta name="description" content="Video Game Survey">
+<meta name="description" content="Quick Computing Repairs">
 
 <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/sin/trunk/html5.js"></script>

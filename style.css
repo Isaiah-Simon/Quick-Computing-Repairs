@@ -1,0 +1,315 @@
+/* CSS designed by Isaiah Simon */
+
+/* ===================  General Section  ==================================== */
+
+* {
+	font-size: 12pt;  /* sets the font size for all elements. */
+    /* look up reset style sheet */
+}
+
+
+
+h1 {
+	color: #3e698c;
+	font-size: 175%;
+	text-align: center;
+	margin:0 auto;
+	width: 90%;
+	font-family: 'Share Tech Mono', sans-serif, arial;
+	padding-top: 2%;
+}
+
+h2 {
+	color: #000000;
+	font-family: "arial";
+	font-size:120%;
+	letter-spacing: 5px;
+	word-spacing: 4px;
+	text-align: center;
+	margin:0 auto;
+	width: 70%;
+	margin-top: 2%;
+}
+
+h3 {
+	color: #000000;
+	font-family: "arial";
+	font-size:110%;
+	letter-spacing: 2px;
+	word-spacing: 4px;
+	margin-bottom: -1%;
+}
+
+footer {
+	margin-bottom: -1%;
+	margin-left: 80%;
+}
+
+footer p {
+	margin-bottom: -5%;
+	padding-left: 20%;
+	font-size: 8pt;
+}
+
+fieldset {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	margin-top: 1%;
+}
+
+td img {
+	border: 2px solid;
+}
+
+sub {
+	font-size: 70%;
+}
+/* ===================  Body ID Section  ==================================== */
+#main {
+	background: #800000;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#form {
+	background: #800000;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#confirmation{
+	background: #800000;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#formRepair {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#txtEmail {
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+#txtAddress {
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+#txtCity {
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+#txtState {
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+#txtZip {
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+
+#bgColor {
+	background-color: white;
+	margin:0 auto;
+	max-width: 800px;
+	padding-bottom: 1%;
+}
+
+#content {
+	margin-left:3%;
+	margin-right:3%;
+	padding-left: 1%;
+	padding-right: 1%;
+	border:none;
+}
+
+#content p {
+	text-indent:1em;
+}
+
+#content a:link {
+	color:#5E5E5E;
+}      /* unvisited link */
+
+#productsList {
+	margin-left:3%;
+	margin-right:3%;
+	padding-left: 1%;
+	padding-right: 1%;
+	border:none;
+}
+
+#errors {
+	border-style: none;
+}
+
+#errors ol li{
+    color: #3e698c;
+	font-size: 130%;
+	font-weight: bold;
+}
+
+#submit {
+	border-style: none;
+	text-align: center;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+
+
+
+
+/* ===================  Header Section  ==================================== */
+/* now i would have a section that corresponds to my html sections.          */
+
+header img {
+	padding-left: 3%;
+	padding-top: 3%;
+}
+
+header a:link {color:#5E5E5E;}      /* unvisited link */
+
+/* ===================  Navigation Section  ================================ */
+
+nav{ 
+	height:37px; 
+	display:block; 
+	padding:0; 
+	margin:20px auto;  
+	border:1px solid; 
+} 
+
+nav > ul {
+	list-style:inside none; 
+	padding:0; 
+	margin:0;
+} 
+
+nav > ul > li {
+	list-style:inside none; 
+	padding:0; 
+	margin:0; 
+	float:left; 
+	display:block;
+	position:relative;
+} 
+
+nav > ul > li > a{ 
+	outline:none; 
+	display:block; 
+	position:relative; 
+	padding:12px 20px; 
+	font:bold 13px/100% Arial, Helvetica, sans-serif; 
+	text-align:center; 
+	text-decoration:none; 
+	text-shadow:1px 1px 0 rgba(0,0,0, 0.4); 
+}
+
+nav > ul > li > a:after{ 
+	content:''; 
+	position:absolute; 
+	border-right:1px solid; 
+	top:-1px; 
+	bottom:-1px; 
+	right:-2px; 
+	z-index:99; 
+}
+ 
+nav ul li.has-sub:hover > a:after{
+	top:0; bottom:0;
+} 
+ 
+nav ul li > ul, nav ul li > div{
+	display:none; 
+	width:auto;
+	position:absolute;
+	top:38px;
+	padding:10px 0; 
+	background:#3f3f3f; 
+	border-radius:0 0 5px 5px;
+	z-index:999; 
+}
+ 
+nav ul li > ul li a{ 
+	outline:none; 
+	display:block; 
+	position:relative;
+	margin:0; 
+	padding:8px 20px;
+	font:10pt Arial, Helvetica, sans-serif;
+	color:white;
+	text-decoration:none; 
+	text-shadow:1px 1px 0 rgba(0,0,0, 0.5); 
+} 
+
+nav, nav > ul > li > ul > li a:hover{ 
+	background:#800000; 
+
+} 
+
+nav{
+	border-color:black;
+} 
+nav > ul > li > a{
+	border-right:1px solid #black; color:white;
+} 
+nav > ul > li > a:after{
+	border-color:black;
+} 
+nav > ul > li > a:hover{
+	color:white;
+	background:black;
+} 
+
+/* ===================  General Class Section  ============================= */
+/* I can add any generic classes here. Technically i can place these rules   */
+/* anywhere in the style sheet. This just helps to orgainize everything.     */
+
+::-webkit-input-placeholder {
+   color: black;
+}
+
+.centered {
+	text-align:center
+}
+
+.mistake {
+    color: black;
+    background-color:red;
+    border: thin solid #000;
+}
+
+.rounded-corners {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.formLarge {
+	text-align: center;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.txtRight {
+	text-align: right;
+	padding-right: 55%;
+}
+
+.smallPad {
+	padding-top: 6%;
+}
+
+.border  {
+	border: 4px solid;
+	border-color:black;
+}
+
+.required {
+	color:red;
+}

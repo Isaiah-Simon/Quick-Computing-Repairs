@@ -411,6 +411,5 @@ if (isset($_POST["btnSubmit"])){
 </section>
 
 <?php } //ends form submitted ok ?>
-
 </body>
 </html>

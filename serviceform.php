@@ -197,7 +197,6 @@ if (isset($_POST["btnSubmit"])){
 	// begin processing form data    
     if(!$errorMsg){    
         if ($debug) print "<p>Form is valid</p>";
-                //now i can mail it
     
    
 	// Save the information

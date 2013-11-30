@@ -229,6 +229,7 @@ if (isset($_POST["btnSubmit"])){
 		$sql = 'INSERT INTO tblService SET ';
 	    $sql .= 'fldSubmittedBy="' . $firstName . ' ' . $lastName . '", ';
 		$sql .= 'fldShortDescription="' . $shortDescription. '"';
+		$sql .= 'fldStatus="request"';
 	
 			$stmt = $db->prepare($sql); 
             if ($debug) print "<p>sql ". $sql; 
@@ -410,5 +411,6 @@ if (isset($_POST["btnSubmit"])){
 </section>
 
 <?php } //ends form submitted ok ?>
+
 </body>
 </html>

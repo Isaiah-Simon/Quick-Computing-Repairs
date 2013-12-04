@@ -129,6 +129,7 @@ if (isset($_POST["btnSubmit"])){
  // 
         if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { 
             if (!empty($submittedBy)) { 
+			print "<p><b>Short Description:</b><i>   " . $shortDescription . "</i></p>";
 			print "<p><b>Submitted By:</b><i>   " . $submittedBy . "</i></p>";
 			print "<p><b>Status:</b><i>   " . $status . "</i></p>";
 			print "<p><b>Updates:<i> Most recent updates are shown first</i></b></p></p>";

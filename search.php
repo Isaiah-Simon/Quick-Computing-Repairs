@@ -173,7 +173,7 @@ if (isset($_POST["btnSubmit"])){
         <input type="text" id="txtserviceNum" name="txtserviceNum" value="<?php echo $serviceNum; ?>" tabindex="1"
            size="25" maxlength="45" placeholder="Please enter your Service ID" <?php if($serviceNumERROR) echo 'class="mistake"' ?>
            onfocus="this.select()" />
-           
+    </fieldset>     
      <!-- Creates Submit and Reset Button for user input -->
      <section id="submit">
        <fieldset style="border: none;">               
@@ -193,4 +193,3 @@ if (isset($_POST["btnSubmit"])){
  
  <?php } //ends form submitted ok ?>
  </html>
- </body>

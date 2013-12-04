@@ -7,7 +7,7 @@
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 // initialize my variables
 //
-$debug=true;
+$debug=false;
 
 $firstName="";
 $lastName="";
@@ -18,6 +18,7 @@ $city="";
 $state="";
 $zip="";
 $shortDescription="";
+$serviceNum="";
 
 $mailed = false;
 $messageA = "";
@@ -223,10 +224,10 @@ if (isset($_POST["btnSubmit"])){
         
             $stmt->execute(); 
 			
-		$primaryKeyDevice = $db->lastInsertId();
-		if ($debug) print "<p>pk= " . $primaryKeyDevice; 
+		
 		//Saves Person information	
 		$sql = 'INSERT INTO tblService SET ';
+		$sql .= 'fkEmailAddress="' . $emailAddress. '",';
 	    $sql .= 'fldSubmittedBy="' . $firstName . ' ' . $lastName . '", ';
 		$sql .= 'fldShortDescription="' . $shortDescription. '",';
 		$sql .= 'fldStatus="Request"';
@@ -235,6 +236,7 @@ if (isset($_POST["btnSubmit"])){
             if ($debug) print "<p>sql ". $sql; 
         
             $stmt->execute(); 
+		$serviceNum = $db->lastInsertId();
 			
 		$sql = "UPDATE tblPerson SET fldzip = LPAD(fldzip, 5, '0')";
 		
@@ -267,6 +269,7 @@ if (isset($_POST["btnSubmit"])){
             $messageB = "<p>Please wait for the next available technician</p>"; 
 
             $messageC .= "<h4>Fields equal to 1 are those that were checked. Blank fields are for fields that were left unselected.</h4>";
+			$messageC .= "<p><b>Service ID Number:</b><i>   " . $serviceNum . "</i></p>";
 			$messageC .= "<p><b>First Name:</b><i>   " . $firstName . "</i></p>";
 			$messageC .= "<p><b>Last Name:</b><i>   " . $lastName . "</i></p>";
 			$messageC .= "<p><b>Email Address:</b><i>   " . $emailAddress . "</i></p>"; 
@@ -395,7 +398,7 @@ if (isset($_POST["btnSubmit"])){
 		<!-- Creates Short Description text area for user input -->
 		<!-- Must be in a single line for the placeholder tag to work -->
 		<fieldset>
-			<label for="txtDescription" class="required">Short Description *</label>
+			<label for="txtShortDescription" class="required">Short Description *</label>
 				<br>
 			<textarea placeholder="Please enter a short description" rows="4" cols="50" id="txtShortDescription" name="txtShortDescription" maxlength="40"  <?php if($shortDescriptionERROR) echo 'class="mistake"' ?>><?php echo $shortDescription; ?></textarea>
 		</fieldset>

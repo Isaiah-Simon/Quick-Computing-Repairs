@@ -94,18 +94,14 @@ if (isset($_POST["btnSubmit"])){
 			$serviceNumSearches = $stmt->fetchAll(); 
              
             $submittedBy = $result["fldSubmittedBy"];
-			
-			print "submited = " . $submittedBy;
               
                 
                         
-                $sql = "SELECT pkServiceNum, fldSubmittedBy, fldStatus, fldDateCreated FROM tblService WHERE fldStatus=" . '"' . $status . '" ORDER BY pkServiceNum ASC'; 
+                $sql = "SELECT pkServiceNum, fldSubmittedBy, fldStatus, fldDateCreated FROM tblService WHERE fldStatus=" . '"' . $status . '" ORDER BY pkServiceNum DESC'; 
             $stmt = $db->prepare($sql); 
             $stmt->execute(); 
 			$statuses = $stmt->fetchAll(); 
 			
-			print $sql;
-                
                 // If the transaction was successful, give success message 
         //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
         
@@ -145,6 +141,8 @@ if (isset($_POST["btnSubmit"])){
 								print "<td><i>" . $status['fldDateCreated'] . "</i></td>\n";
 								print "<td><i><a href='http://www.uvm.edu/~isimon/cs148/assignment7.1/adminView.php?q=" . $status['pkServiceNum'] . "'>View</a></i></td>\n";
 								print "<td><i><a href='http://www.uvm.edu/~isimon/cs148/assignment7.1/adminEdit.php?q=" . $status['pkServiceNum'] . "'>Edit</a></i></td>\n";
+								print "<td><i><a href='http://www.uvm.edu/~isimon/cs148/assignment7.1/adminDelete.php?q=" . $status['pkServiceNum'] . "'>Delete</a></i></td>\n";
+								
                                 print "</tr>\n";
                         }
                         print "</table>\n";
@@ -167,6 +165,7 @@ if (isset($_POST["btnSubmit"])){
 									print "<td><i>" . $serviceNumSearch['fldDateCreated'] . "</i></td>\n";
 									print "<td><i><a href='http://www.uvm.edu/~isimon/cs148/assignment7.1/adminView.php?q=" . $serviceNumSearch['pkServiceNum'] . "'>View</a></i></td>\n";
 									print "<td><i><a href='http://www.uvm.edu/~isimon/cs148/assignment7.1/adminEdit.php?q=" . $serviceNumSearch['pkServiceNum'] . "'>Edit</a></i></td>\n";
+									print "<td><i><a href='http://www.uvm.edu/~isimon/cs148/assignment7.1/adminDelete.php?q=" . $serviceNumSearch['pkServiceNum'] . "'>Delete</a></i></td>\n";
 									print "</tr>\n";
 									}
 							} else {
@@ -215,8 +214,7 @@ if (isset($_POST["btnSubmit"])){
 			</select>
      </fieldset>       
      <!-- Creates Submit and Reset Button for user input -->
-     <section id="submit">
-	 <fieldset> 
+     <section id="submit"> 
        <fieldset style="border: none;">               
          <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit" 
            tabindex="34" class="button"/>

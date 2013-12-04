@@ -7,12 +7,14 @@ require_once("connect.php");
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 // initialize my variables
 //
-$debug=false;
+$debug=true;
 
 $serviceNum="";
 $firstName="";
 $lastName="";
 $phoneNumber="";
+$emailAddress="";
+$previousEmailAddress="";
 $street="";
 $city="";
 $state="";
@@ -27,13 +29,22 @@ $dateCreated="";
 $status="";
 $updates="";
 $update="";
+$updateText="";
 $updateTime="";
 
-$baseURL = "http://www.uvm.edu/~isimon/cs148/assignment7.1/";
-$yourURL = $baseURL . "search.php";
-
 //initialize flags for errors, one for each item
-$serviceNumERROR = false;
+$shortDescriptionERROR = false;
+$firstNameERROR = false;
+$lastNameERROR = false;
+$phoneNumberERROR = false;
+$emailAddressERROR = false;
+$streetERROR = false;
+$cityERROR = false;
+$stateERROR = false;
+$zipERROR = false;
+$specificPointOfFailureERROR= false;
+$updateTextERROR= false;
+
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 // if form has been submitted, validate the information
 if(isset($_GET["q"])){ 
@@ -43,7 +54,7 @@ if(isset($_GET["q"])){
 		$sql = "SELECT * FROM tblService, tblPerson WHERE pkserviceNum=" . $serviceNum; 
             $stmt = $db->prepare($sql); 
             $stmt->execute(); 
-			print $sql;
+			
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC); 
              
@@ -53,6 +64,8 @@ if(isset($_GET["q"])){
 			$firstName = $result["fldFirstName"];
 			$lastName = $result["fldLastName"];
 			$phoneNumber = $result["fldPhoneNumber"];
+			$previousEmailAddress = $result["pkEmailAddress"];
+			$emailAddress = $result["pkEmailAddress"];
 			$street = $result["fldStreet"];
 			$city = $result["fldCity"];
 			$state = $result["fldState"];
@@ -68,10 +81,283 @@ if(isset($_GET["q"])){
             $stmt->execute(); 
 			$updates = $stmt->fetchAll();
 	
+			print "previous email = " . $previousEmailAddress;
+		
 		
 		// If the transaction was successful, give success message 
 	//%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 	
+}
+?>
+
+<? if (isset($_POST["btnSubmit"])){
+
+   // ************************************************************
+    // is the refeering web page the one we want or is someone trying 
+    // to hack in. this is not 100% reliable */
+    $fromPage = getenv("http_referer"); 
+	$baseURL = "http://www.uvm.edu/~isimon/cs148/assignment7.1/";
+	$yourURL = $baseURL . "adminEdit.php?q=" . $serviceNum;
+	
+    if ($debug) print "<p>From: " . $fromPage . " should match yourUrl: " . $yourURL . "<br> DEBUG MODE IS ON";
+	
+	require_once("connect.php");
+    
+	/*Replace any html or javascript code with html entities*/
+	$firstName = htmlentities($_POST["txtFirstName"], ENT_QUOTES, "UTF-8");
+	$lastName = htmlentities($_POST["txtlastName"], ENT_QUOTES, "UTF-8");
+	$emailAddress = htmlentities($_POST["txtEmail"], ENT_QUOTES, "UTF-8");
+	$phoneNumber = htmlentities($_POST["txtPhone"], ENT_QUOTES, "UTF-8");
+	$street = htmlentities($_POST["txtStreet"], ENT_QUOTES, "UTF-8");
+	$city = htmlentities($_POST["txtCity"], ENT_QUOTES, "UTF-8");
+	$state = htmlentities($_POST["txtState"], ENT_QUOTES, "UTF-8");
+	$zip = htmlentities($_POST["txtZip"], ENT_QUOTES, "UTF-8");
+	$shortDescription = htmlentities($_POST["txtShortDescription"], ENT_QUOTES, "UTF-8");
+	$updateText = htmlentities($_POST["txtUpdate"], ENT_QUOTES, "UTF-8");
+	$specificPointOfFailure = htmlentities($_POST["txtSpecificPointOfFailure"], ENT_QUOTES, "UTF-8");
+	
+    /*
+        this function just converts all input to html entities to remove any potentially
+        malicious coding
+    */
+    function clean($elem)
+    {
+        if(!is_array($elem))
+            $elem = htmlentities($elem,ENT_QUOTES,"UTF-8");
+        else
+            foreach ($elem as $key => $value)
+                $elem[$key] = clean($value);
+        return $elem;
+     }
+
+   // be sure to clean out any code that was submitted
+     if(isset($_GET)) $_CLEAN['GET'] = clean($_GET);
+     if(isset($_POST)) $_CLEAN['POST'] = clean($_POST); 
+	  
+	  //check for errors
+     include ("validation_functions.php");
+     $errorMsg=array();
+	 
+	 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^
+    
+     //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
+     //begin testing each form element 
+     
+     //Tests for empty and incorrect values in the text boxes
+	$firstName=$_CLEAN['POST']['txtFname'];
+     if(empty($firstName)){
+        $errorMsg[]="Please enter your First Name";
+        $firstNameERROR = true;
+     } else {
+        $valid = verifyAlphaNum ($firstName); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="First Name must be letters and numbers, spaces, dashes and single quotes only.";
+            $firstNameERROR = true;
+        }
+     }
+	 
+    $lastName=$_CLEAN['POST']['txtLname'];
+     if(empty($lastName)){
+        $errorMsg[]="Please enter your Last Name";
+        $lastNameERROR = true;
+     } else {
+        $valid = verifyAlphaNum ($lastName); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Last Name must be letters and numbers, spaces, dashes and single quotes only.";
+            $lastNameERROR = true;
+        }
+     }
+	 
+	 $emailAddress=$_CLEAN['POST']['txtEmail'];
+     if(empty($emailAddress)){
+        $errorMsg[]="Please enter your Email address";
+        $emailAddressERROR = true;
+     } else {
+        $valid = verifyEmail ($emailAddress); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Please enter a valid Email address";
+            $emailAddressERROR = true;
+        }
+     }
+	 
+	 $phoneNumber=$_CLEAN['POST']['txtPhone'];
+     if(empty($phoneNumber)){
+        $errorMsg[]="Please enter your Phone Number";
+        $phoneNumberERROR = true;
+     } else {
+        $valid = verifyNum ($phoneNumber); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Please enter a valid Email address";
+            $phoneNumberERROR = true;
+        }
+     }
+	 
+	$street=$_CLEAN['POST']['txtStreet'];
+     if(empty($street)){
+        $errorMsg[]="Please enter your Street Address";
+        $streetERROR = true;
+     }
+	 
+	$city=$_CLEAN['POST']['txtCity'];
+     if(empty($city)){
+        $errorMsg[]="Please enter your City";
+        $cityERROR = true;
+     } else {
+        $valid = verifyAlphaNum ($city); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Please enter a valid Street Address";
+            $cityERROR = true;
+        }
+     }
+	 
+	 $state=$_CLEAN['POST']['txtState'];
+     if(empty($state)){
+        $errorMsg[]="Please enter your State";
+        $stateERROR = true;
+     } else {
+        $valid = verifyAlphaNum ($state); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Please enter a valid State";
+            $stateERROR = true;
+        }
+     }
+	 
+	 $zip=$_CLEAN['POST']['txtZip'];
+     if(empty($zip)){
+        $errorMsg[]="Please enter your Zip Code";
+        $zipERROR = true;
+     } else {
+        $valid = verifyNum ($zip); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Please enter a valid Zip Code";
+            $zipERROR = true;
+        }
+     }
+	 
+	 $shortDecription=$_CLEAN['POST']['txtShortDescription'];
+     if(empty($shortDescription)){
+        $errorMsg[]="Please enter a Short Description";
+        $shortDescriptionERROR = true;
+     } else {
+        $valid = verifyText ($shortDescription); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Short Description must be letters and numbers, spaces, dashes and single quotes only.";
+            $shortDescriptionERROR = true;
+        }
+     }
+
+	$specificPointOfFailure=$_CLEAN['POST']['txtSpecificPointOfFailure'];
+     if(empty($specificPointOfFailure)){
+        $errorMsg[]="Please enter a Specific Point of Failure";
+        $specificPointOfFailureERROR = true;
+     } else {
+        $valid = verifyText ($specificPointOfFailure); /* test for non-valid  data */
+        if (!$valid){ 
+            $errorMsg[]="Short Description must be letters and numbers, spaces, dashes and single quotes only.";
+            $specificPointOfFailure = true;
+        }
+     }
+	 
+	 $updateText=$_CLEAN['POST']['txtUpdateText'];
+     if (!$valid){ 
+            $errorMsg[]="Short Description must be letters and numbers, spaces, dashes and single quotes only.";
+            $shortDescriptionERROR = true;
+	}
+	
+	$serviceNum=$_CLEAN['POST']['txtServiceNum'];
+
+	if(!$errorMsg){    
+        if ($debug) print "<p>Form is valid</p>";
+	}
+	
+	//Sets list value for items to create sticky list
+	if(isset($_CLEAN['POST']["lstStatus"])){
+            $status = $_CLEAN['POST']["lstStatus"];
+    }
+	
+	if(isset($_CLEAN['POST']["lstPriority"])){
+            $priority = $_CLEAN['POST']["lstPriority"];
+    }
+	
+	//Sets list value for items to create sticky list
+	if(isset($_CLEAN['POST']["lstPlatform"])){
+            $platform = $_CLEAN['POST']["lstPlatform"];
+    }
+	
+	//Sets list value for items to create sticky list
+	if(isset($_CLEAN['POST']["lstOperatingSystem"])){
+            $operatingSystem = $_CLEAN['POST']["lstOperatingSystem"];
+    }
+	
+	//Sets list value for items to create sticky list
+	if(isset($_CLEAN['POST']["lstProblemDueTo"])){
+            $problemDueTo = $_CLEAN['POST']["lstProblemDueTo"];
+    }
+	
+	//SQL commands
+	try { 
+            $db->beginTransaction();  
+            //Saves Person information	
+		$sql = 'UPDATE tblPerson SET ';
+	    $sql .= 'pkEmailAddress="' . $emailAddress . '", ';
+	    $sql .= 'fldFirstName="' . $firstName . '", ';
+		$sql .= 'fldLastName="' . $lastName . '", ';
+		$sql .= 'fldPhoneNumber=' . $phoneNumber . ', ';
+		$sql .= 'fldStreet="' . $street . '", ';
+		$sql .= 'fldCity="' . $city . '", ';
+		$sql .= 'fldState="' . $state . '", ';
+		$sql .= 'fldZip=' . $zip ;
+		$sql .= ' WHERE pkEmailAddress="' . $emailAddress . '"';
+           
+			$stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute(); 
+			
+		//Saves Service information	
+		$sql = 'UPDATE tblService SET ';
+		$sql .= 'fkEmailAddress="' . $emailAddress. '",';
+	    $sql .= 'fldSubmittedBy="' . $firstName . ' ' . $lastName . '",';
+		$sql .= 'fldStatus="' . $status. '",';
+		$sql .= 'fldPriority="' . $priority. '",';
+		$sql .= 'fldPlatform="' . $platform. '",';
+		$sql .= 'fldOperatingSystem="' . $operatingSystem. '",';
+		$sql .= 'fldProblemDueTo="' . $problemDueTo. '",';
+		$sql .= 'fldSpecificPointOfFailure="' . $specificPointOfFailure. '",';
+		$sql .= 'fldShortDescription="' . $shortDescription. '"';
+		$sql .= ' WHERE pkServiceNum=' . $serviceNum;
+	
+			$stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute(); 
+		// Saves update information	
+		if (!empty($updateText)){
+		$sql = 'INSERT INTO tblUpdate SET ';
+		$sql .= 'fkServiceNum="' . $serviceNum. '",';
+		$sql .= 'fldUpdateText="' . $updateText. '"';
+		
+			$stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute();
+		}
+			
+		$sql = "UPDATE tblPerson SET fldzip = LPAD(fldzip, 5, '0')";
+		
+			$stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute();
+			
+			// all sql statements are done so lets commit to our changes 
+            $dataEntered = $db->commit(); 
+            if ($debug) print "<p>transaction complete "; 
+        } catch (PDOExecption $e) { 
+            $db->rollback(); 
+            if ($debug) print "Error!: " . $e->getMessage() . "</br>"; 
+            $errorMsg[] = "There was a problem with accpeting your data please contact us directly."; 
+        } 
 }
 ?>
 
@@ -84,17 +370,51 @@ if(isset($_GET["q"])){
  <? include ("nav.php"); ?>
  
  <section id="content">  
+ <?	//############################################################################ 
+// 
+//  In this block  display the information that was submitted and do not  
+//  display the form. 
+// 
+        if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { 
+            print "<h2>The ticket has been updated "; 
+			print '<p><a href="http://www.uvm.edu/~isimon/cs148/assignment7.1/admin.php">Return to Admin Page</a></p>';
+        } else {
+?>
+
+<section id="errors">
+		<?php
+		if($errorMsg){
+			echo "<ol>\n";
+			foreach($errorMsg as $err){
+				echo "<li>" . $err . "</li>\n";
+			}
+			echo "</ol>\n";
+		} 
+		?>
+</section>
+ 
  
  <section>
    <h2>Admin Edit</h2>
 		<form action="<? print $_SERVER['PHP_SELF']; ?>" method="post" id="frmAdminEdit" enctype="multipart/form-data">
 		<p><b>Required fields are marked with an asterisks (*). </b><p>
 		<fieldset>
+			<label for="txtServiceNum" class="required">Service ID Number (Can't be edited)</label>
+			<input type="text" name="txtServiceNum" value="<?php echo $serviceNum; ?>" readonly size="5"><br>
+		
 			<label for="txtShortDescription" class="required">Short Description *</label>
-		   <input type="text" id="txtShortDescription" name="txtShortDescription" value="<?php echo $shortDescription; ?>" tabindex="1"
+		    <input type="text" id="txtShortDescription" name="txtShortDescription" value="<?php echo $shortDescription; ?>" tabindex="1"
 					size="75" maxlength="75" placeholder="Short Description" <?php if($shortDescriptionERROR) echo 'class="mistake"' ?>
 					onfocus="this.select()" />
 			<br />
+			<label for="lstStatus">Status:</label>
+			<select id="lstStatus" name="lstStatus" tabindex="15" size="1">
+				<option value="Request" <?php if($status=="Request") echo ' selected="selected" ';?> >Request</option>
+				<option value="Closed" <?php if($status=="Closed") echo ' selected="selected" ';?> >Closed</option>
+				<option value="Assisting" <?php if($status=="Assisting") echo ' selected="selected" ';?> >Assisting</option>
+				<option value="Awaiting Client PickUp" <?php if($status=="AwaitingClientPickUp") echo ' selected="selected" ';?> >Awaiting Client Pickup</option>
+				<option value="Awaiting Client Action" <?php if($status=="AwaitingClientAction") echo ' selected="selected" ';?> >Awaiting Client Action</option>
+			</select>
 			<label for="lstPriority">Priority Level:</label>
 			<select id="lstPriority" name="lstPriority" tabindex="15" size="1">
 				<option value="Not Set" <?php if($priority=="Not Set") echo ' selected="selected" ';?> >Not Set</option>
@@ -122,7 +442,7 @@ if(isset($_GET["q"])){
 		   <label for="txtEmail" class="required">Email Address *</label>
 		   <input type="email" id="txtEmail" name="txtEmail" value="<?php echo $emailAddress; ?>" tabindex="3"
 					size="35" maxlength="45" placeholder="Please enter a valid Email address" <?php if($emailAddressERROR) echo 'class="mistake"' ?>
-					onfocus="this.select()" />
+					onfocus="this.select()" readonly />
 			<br>
 			<!-- Creates Phone Number text box for user input -->
 			<label for="txtPhone" class="required">Phone Number * (No Dashes)</label>
@@ -185,7 +505,7 @@ if(isset($_GET["q"])){
 			</select>
 		<label for="txtSpecificPointOfFailure" class="required">Specific Point of Failure *</label>
 		   <input type="text" id="txtSpecificPointOfFailure" name="txtSpecificPointOfFailure" value="<?php echo $specificPointOfFailure; ?>" tabindex="1"
-					size="25" maxlength="45" placeholder="Please enter specific point of failure" <?php if($specificPointOfFailureERROR) echo 'class="mistake"' ?>
+					size="35" maxlength="45" placeholder="Please enter specific point of failure" <?php if($specificPointOfFailureERROR) echo 'class="mistake"' ?>
 					onfocus="this.select()" />	
 		</fieldset>
 		
@@ -194,7 +514,7 @@ if(isset($_GET["q"])){
 		<fieldset>
 			<label for="txtUpdate">Short Description *</label>
 				<br>
-			<textarea placeholder="Update your ticket" rows="4" cols="50" id="txtUpdate" name="txtUpdate" maxlength="500"  <?php if($updateERROR) echo 'class="mistake"' ?>><?php echo $update; ?></textarea>
+			<textarea placeholder="Update your ticket" rows="4" cols="50" id="txtUpdateText" name="txtUpdateText" maxlength="500"  <?php if($updateTextERROR) echo 'class="mistake"' ?>><?php echo $updateText; ?></textarea>
 		</fieldset>
 		
 		<!-- Creates Submit and Reset Button for user input -->
@@ -210,7 +530,7 @@ if(isset($_GET["q"])){
 	</form>
    
 			<?
-			print "<p><b>Updates:<i> Most recent updates are shown first</i></b></p></p>";
+			print "<p><b>Updates:<i> Most recent updates are shown first</i></b></p>";
 			print "<table>\n";
 			print "<tr>\n";
 			print "</tr>\n";
@@ -230,6 +550,7 @@ if(isset($_GET["q"])){
  <? include ("footer.php"); ?>
  
  </section>
+ <?php } //ends form submitted ok ?>
  
  </html>
  </body>

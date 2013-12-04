@@ -44,7 +44,6 @@ if(isset($_GET["q"])){
 		$sql = "SELECT * FROM tblService, tblPerson WHERE pkserviceNum=" . $serviceNum; 
             $stmt = $db->prepare($sql); 
             $stmt->execute(); 
-			print $sql;
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC); 
              
@@ -98,7 +97,7 @@ if(isset($_GET["q"])){
 			print '<p><b>State:</b><i>   ' . $state . '</i><b> Zip:</b><i> ' . $zip . '</i></p>';
 			print '<p><b>Platform:</b><i>   ' . $platform . '</i><b> Operating System:</b><i> ' . $operatingSystem . '</i></p>';
 			print '<p><b>Problem Due To:</b><i>   ' . $problemDueTo . '</i><b> Specific Point of Failure:</b><i> ' . $specificPointOfFailure . '</i></p>';
-			print "<p><b>Updates:<i> Most recent updates are shown first</i></b></p></p>";
+			print "<p><b>Updates:<i> Most recent updates are shown first</i></b></p>";
 			print "<table>\n";
 			print "<tr>\n";
 			print "</tr>\n";

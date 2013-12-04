@@ -340,7 +340,7 @@ if (isset($_POST["btnSubmit"])){
 		?>
 </section>
 	<h2>Service Form</h2>
-	<form action="<? print $_SERVER['PHP_SELF']; ?>" method="post" id="frmRegister" enctype="multipart/form-data">
+	<form action="<? print $_SERVER['PHP_SELF']; ?>" method="post" id="frmService" enctype="multipart/form-data">
 		<p><b>Required fields are marked in <span class="required"> red </span> and with an asterisks (*). </b><p>
 		
 		<!-- Creates First Name text box for user input -->

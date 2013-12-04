@@ -187,7 +187,7 @@ if (isset($_POST["btnSubmit"])){
         $errorMsg[]="Please enter a Short Description";
         $shortDescriptionERROR = true;
      } else {
-        $valid = verifyAlphaNum ($shortDescription); /* test for non-valid  data */
+        $valid = verifyText ($shortDescription); /* test for non-valid  data */
         if (!$valid){ 
             $errorMsg[]="Short Description must be letters and numbers, spaces, dashes and single quotes only.";
             $shortDescriptionERROR = true;
@@ -228,13 +228,20 @@ if (isset($_POST["btnSubmit"])){
 		//Saves Person information	
 		$sql = 'INSERT INTO tblService SET ';
 	    $sql .= 'fldSubmittedBy="' . $firstName . ' ' . $lastName . '", ';
-		$sql .= 'fldShortDescription="' . $shortDescription. '"';
-		$sql .= 'fldStatus="request"';
+		$sql .= 'fldShortDescription="' . $shortDescription. '",';
+		$sql .= 'fldStatus="Request"';
 	
 			$stmt = $db->prepare($sql); 
             if ($debug) print "<p>sql ". $sql; 
         
             $stmt->execute(); 
+			
+		$sql = "UPDATE tblPerson SET fldzip = LPAD(fldzip, 5, '0')";
+		
+			$stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute();
 			
 			// all sql statements are done so lets commit to our changes 
             $dataEntered = $db->commit(); 

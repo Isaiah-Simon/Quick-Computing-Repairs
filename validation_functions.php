@@ -2,7 +2,7 @@
 function verifyAlphaNum ($testString) {
     // Check for letters, numbers and dash, period, space and single quote only. 
     return (preg_match ("/^[a-zA-Z -]+$/", $testString));
-}    
+}     
 
 function verifyEmail ($testString) {
     // Check for a valid email address 

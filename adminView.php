@@ -13,6 +13,7 @@ $serviceNum="";
 $firstName="";
 $lastName="";
 $phoneNumber="";
+$emailAddress="";
 $street="";
 $city="";
 $state="";
@@ -52,6 +53,7 @@ if(isset($_GET["q"])){
 			$priority = $result["fldPriority"];
 			$firstName = $result["fldFirstName"];
 			$lastName = $result["fldLastName"];
+			$emailAddress = $result["pkEmailAddress"];
 			$phoneNumber = $result["fldPhoneNumber"];
 			$street = $result["fldStreet"];
 			$city = $result["fldCity"];
@@ -88,10 +90,10 @@ if(isset($_GET["q"])){
  <section>
    <h2>Admin View</h2>
 		<?
-			print "<p><b>Short Description:</b><i>   " . $shortDescription . "</i></p>";
+			print '<p><b>Service ID Number:</b><i>   ' . $serviceNum . '</i><b> Short Description:</b><i> ' . $shortDescription . '</i></p>';
 			print '<p><b>Status:</b><i>   ' . $status . '</i><b> Priority:</b><i> ' . $priority . '</i></p>';
 			print '<p><b>First Name:</b><i>   ' . $firstName . '</i><b> Last Name:</b><i> ' . $lastName . '</i></p>';
-			print "<p><b>Phone Number:</b><i>   " . $phoneNumber . "</i></p>";
+			print '<p><b>Email Address:</b><i>   ' . $emailAddress . '</i><b> Phone Number:</b><i> ' . $phoneNumber . '</i></p>';
 			print '<p><b>Street:</b><i>   ' . $street . '</i><b> City:</b><i> ' . $city . '</i></p>';
 			print '<p><b>State:</b><i>   ' . $state . '</i><b> Zip:</b><i> ' . $zip . '</i></p>';
 			print '<p><b>Platform:</b><i>   ' . $platform . '</i><b> Operating System:</b><i> ' . $operatingSystem . '</i></p>';

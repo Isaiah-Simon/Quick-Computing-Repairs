@@ -11,6 +11,7 @@ $debug=false;
 
 $serviceNum="";
 $submittedBy="";
+$shortDescription="";
 $status="";
 $updates="";
 $update="";
@@ -96,6 +97,7 @@ if (isset($_POST["btnSubmit"])){
              
             $submittedBy = $result["fldSubmittedBy"];
 			$status = $result["fldStatus"];
+			$shortDescription = $result["fldShortDescription"];
 			
 		
 			

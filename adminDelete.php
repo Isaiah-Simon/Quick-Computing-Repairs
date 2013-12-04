@@ -16,7 +16,6 @@ if(isset($_GET["q"])){
 		$sql = "DELETE FROM tblService WHERE pkServiceNum=" . $serviceNum; 
             $stmt = $db->prepare($sql); 
             $stmt->execute();   
-			print $sql;
 			
 		$sql = "DELETE FROM tblUpdate WHERE fkServiceNum=" . $serviceNum;
             $stmt = $db->prepare($sql);

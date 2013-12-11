@@ -1,0 +1,400 @@
+/* CSS designed by Isaiah Simon */
+
+/* ===================  General Section  ==================================== */
+
+* {
+	font-size: 12pt;  /* sets the font size for all elements. */
+    /* look up reset style sheet */
+}
+
+
+
+h1 {
+	padding-left: 20%;
+	color: #3e698c;
+	font-size: 175%;
+	text-align: center;
+	margin:0 auto;
+	width: 90%;
+	font-family: 'Share Tech Mono', sans-serif, arial;
+	padding-bottom: 2%;
+}
+
+h2 {
+	color: #000000;
+	font-family: "arial";
+	font-size:120%;
+	letter-spacing: 5px;
+	word-spacing: 4px;
+	text-align: center;
+	margin:0 auto;
+	width: 70%;
+	margin-top: 2%;
+}
+
+h3 {
+	color: #000000;
+	font-family: "arial";
+	font-size:110%;
+	letter-spacing: 2px;
+	word-spacing: 4px;
+	margin-bottom: -1%;
+}
+
+footer {
+	margin-bottom: -1%;
+	margin-left: 80%;
+}
+
+footer p {
+	margin-bottom: -5%;
+	padding-left: 20%;
+	font-size: 8pt;
+}
+
+fieldset {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	margin-top: 1%;
+}
+
+td img {
+	border: 2px solid;
+}
+/* ===================  Body ID Section  ==================================== */
+#main {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#adminAdd {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#adminView {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#adminEdit {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#adminDelete {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#products {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#admin {
+	background: #3e698c;
+	font:20pt Arial, Helvetica, sans-serif;
+}
+
+#adminSearch {
+	background: #3e698c;
+	font:10pt Arial, Helvetica, sans-serif;
+}
+
+#adminSearch table {
+	margin: 0 auto;
+	margin-top: 5%;
+}
+
+#adminSearch table tr:hover {
+	margin: 0 auto;
+	margin-top: 5%;
+}
+
+#adminSearch table td{
+	border-bottom:1px solid;
+}
+
+#adminSearch table td{
+	padding-top:1%;
+	padding-bottom:1%;
+	padding-right: 1%;
+}
+
+#bgColor {
+	background-color: white;
+	margin:0 auto;
+	max-width: 800px;
+	padding-bottom: 1%;
+}
+
+#content {
+	margin-left:3%;
+	margin-right:3%;
+	padding-left: 1%;
+	padding-right: 1%;
+	border:none;
+}
+
+#content a:link {
+color:#5E5E5E;
+}      /* unvisited link */
+
+#errors {
+	border-style: none;
+}
+
+#errors ol li{
+    color: #3e698c;
+	font-size: 130%;
+	font-weight: bold;
+}
+
+#submit {
+	border-style: none;
+	text-align: center;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+
+
+
+
+/* ===================  Header Section  ==================================== */
+/* now i would have a section that corresponds to my html sections.          */
+#header {
+	background-color: #dddddd;
+}
+
+header img {
+	padding-left: 3%;
+	padding-top: 3%;
+}
+
+header a:link {color:#5E5E5E;}      /* unvisited link */
+
+/* ===================  Navigation Section  ================================ */
+
+nav{ 
+	height:37px; 
+	display:block; 
+	padding:0; 
+	margin:20px auto;  
+	border:1px solid; 
+} 
+
+nav > ul {
+	list-style:inside none; 
+	padding:0; 
+	margin:0;
+} 
+
+nav > ul > li {
+	list-style:inside none; 
+	padding:0; 
+	margin:0; 
+	float:left; 
+	display:block;
+	position:relative;
+} 
+
+nav > ul > li > a{ 
+	outline:none; 
+	display:block; 
+	position:relative; 
+	padding:12px 20px; 
+	font:bold 13px/100% Arial, Helvetica, sans-serif; 
+	text-align:center; 
+	text-decoration:none; 
+	text-shadow:1px 1px 0 rgba(0,0,0, 0.4); 
+}
+
+nav > ul > li > a:after{ 
+	content:''; 
+	position:absolute; 
+	border-right:1px solid; 
+	top:-1px; 
+	bottom:-1px; 
+	right:-2px; 
+	z-index:99; 
+}
+ 
+nav ul li.has-sub:hover > a:after{
+	top:0; bottom:0;
+} 
+
+nav > ul > li.has-sub > a:before{
+	content:''; 
+	position:absolute; 
+	top:18px; 
+	right:6px; 
+	border:5px solid transparent; 
+	border-top:5px solid #fff; 
+}
+ 
+nav > ul > li.has-sub:hover > a:before{
+	top:19px;
+} 
+
+nav ul li.has-sub:hover > a{ 
+	background:#3f3f3f; 
+	border-color:#3f3f3f; 
+	padding-bottom:13px; padding-top:13px; 
+	top:-1px; z-index:999; 
+} 
+
+nav ul li.has-sub:hover > ul, nav ul li.has-sub:hover > div{
+	display:block;
+} 
+
+nav ul li.has-sub > a:hover{
+	background:#3f3f3f;
+	border-color:#3f3f3f;
+} 
+nav ul li > ul, nav ul li > div{
+	display:none; 
+	width:auto;
+	position:absolute;
+	top:38px;
+	padding:10px 0; 
+	background:#3f3f3f; 
+	border-radius:0 0 5px 5px;
+	z-index:999; 
+}
+ 
+nav ul li > ul{
+	width:200px;
+}
+ 
+nav ul li > ul li{
+	display:block; 
+	list-style:inside none; 
+	padding:0; 
+	margin:0; 
+	position:relative;
+}
+ 
+nav ul li > ul li a{ 
+	outline:none; 
+	display:block; 
+	position:relative;
+	margin:0; 
+	padding:8px 20px;
+	font:10pt Arial, Helvetica, sans-serif;
+	color:#fff;
+	text-decoration:none; 
+	text-shadow:1px 1px 0 rgba(0,0,0, 0.5); 
+} 
+
+nav, nav > ul > li > ul > li a:hover{ 
+	background:#3e698c; 
+	background:-moz-linear-gradient(top,  #3e698c 0%, #30576e 100%); 
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#3e698c), color-stop(100%,#30576e)); 
+	background:-webkit-linear-gradient(top,  #3e698c 0%,#30576e 100%); 
+	background:-o-linear-gradient(top, #3e698c 0%,#30576e 100%); 
+	background:-ms-linear-gradient(top, #3e698c 0%,#30576e 100%); 
+} 
+
+nav{
+	border-color:#1b313d;
+} 
+nav > ul > li > a{
+	border-right:1px solid #1b313d; color:#fff;
+} 
+nav > ul > li > a:after{
+	border-color:#6696bd;
+} 
+nav > ul > li > a:hover{
+	background:#436f93;
+} 
+
+/* ===================  General Class Section  ============================= */
+/* I can add any generic classes here. Technically i can place these rules   */
+/* anywhere in the style sheet. This just helps to orgainize everything.     */
+
+::-webkit-input-placeholder {
+   color: black;
+}
+
+.mistake {
+    color: white;
+    background-color:#3e698c;
+    border: thin solid #000;
+}
+
+.rounded-corners {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.formLarge {
+	text-align: center;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.txtRight {
+	text-align: right;
+	padding-right: 55%;
+}
+
+.smallPad {
+	padding-top: 6%;
+}
+
+.border  {
+	border: 4px solid;
+	border-color:black;
+}
+
+.descPad {
+	padding-left: 1%;
+	padding-right: 1%
+}
+
+.price {
+	text-decoration: underline;
+}
+
+.bigText {
+	font-weight:bold;
+	font-size: 125%;
+	text-align: center;
+	margin-bottom: -1%;
+	margin-top: -1%;
+}
+
+.productTable {
+	margin-left: -3%;
+	margin-right: -2%;
+}
+
+.fanimgMargin {
+	margin-left: 20%;
+}
+
+.headEmail {
+	margin-top: -1%;
+	margin-left: 67%;
+	margin-bottom: -4%;
+}
+
+.headPhone {
+	margin-left: 79%;
+	margin-bottom: -2%;
+}
+
+.imgBorder {
+	float: right;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 5px solid;
+	border-color: #5E5E5E;
+	margin-left: 2%;
+	margin-bottom: 2%;
+}

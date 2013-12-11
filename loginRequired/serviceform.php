@@ -7,7 +7,7 @@
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 // initialize my variables
 //
-$debug=true;
+$debug=false;
 
 $firstName="";
 $lastName="";
@@ -18,14 +18,16 @@ $city="";
 $state="";
 $zip="";
 $shortDescription="";
+$serviceNum="";
 
 $mailed = false;
 $messageA = "";
 $messageB = "";
 $messageC = "";
 
-$baseURL = "http://www.uvm.edu/~isimon/cs148/assignment7.1/";
-$yourURL = $baseURL . "serviceform.php";
+$baseURL = "https://www.uvm.edu/~isimon/cs148/assignment7.1/";
+$yourURL = $baseURL . "loginRequired/serviceform.php";
+
 
 //initialize flags for errors, one for each item
 $firstNameERROR = false;
@@ -187,7 +189,7 @@ if (isset($_POST["btnSubmit"])){
         $errorMsg[]="Please enter a Short Description";
         $shortDescriptionERROR = true;
      } else {
-        $valid = verifyAlphaNum ($shortDescription); /* test for non-valid  data */
+        $valid = verifyText ($shortDescription); /* test for non-valid  data */
         if (!$valid){ 
             $errorMsg[]="Short Description must be letters and numbers, spaces, dashes and single quotes only.";
             $shortDescriptionERROR = true;
@@ -223,17 +225,26 @@ if (isset($_POST["btnSubmit"])){
         
             $stmt->execute(); 
 			
-		$primaryKeyDevice = $db->lastInsertId();
-		if ($debug) print "<p>pk= " . $primaryKeyDevice; 
+		
 		//Saves Person information	
 		$sql = 'INSERT INTO tblService SET ';
+		$sql .= 'fkEmailAddress="' . $emailAddress. '",';
 	    $sql .= 'fldSubmittedBy="' . $firstName . ' ' . $lastName . '", ';
-		$sql .= 'fldShortDescription="' . $shortDescription. '"';
+		$sql .= 'fldShortDescription="' . $shortDescription. '",';
+		$sql .= 'fldStatus="Request"';
 	
 			$stmt = $db->prepare($sql); 
             if ($debug) print "<p>sql ". $sql; 
         
             $stmt->execute(); 
+		$serviceNum = $db->lastInsertId();
+			
+		$sql = "UPDATE tblPerson SET fldzip = LPAD(fldzip, 5, '0')";
+		
+			$stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute();
 			
 			// all sql statements are done so lets commit to our changes 
             $dataEntered = $db->commit(); 
@@ -259,6 +270,7 @@ if (isset($_POST["btnSubmit"])){
             $messageB = "<p>Please wait for the next available technician</p>"; 
 
             $messageC .= "<h4>Fields equal to 1 are those that were checked. Blank fields are for fields that were left unselected.</h4>";
+			$messageC .= "<p><b>Service ID Number:</b><i>   " . $serviceNum . "</i></p>";
 			$messageC .= "<p><b>First Name:</b><i>   " . $firstName . "</i></p>";
 			$messageC .= "<p><b>Last Name:</b><i>   " . $lastName . "</i></p>";
 			$messageC .= "<p><b>Email Address:</b><i>   " . $emailAddress . "</i></p>"; 
@@ -289,7 +301,7 @@ if (isset($_POST["btnSubmit"])){
 
 <? include ("top.php"); ?>
 
-<body id="form">
+<body id="serviceform">
 
 <section id="bgColor" class="rounded-corners border">
 <? include ("header.php"); ?>
@@ -332,7 +344,10 @@ if (isset($_POST["btnSubmit"])){
 		?>
 </section>
 	<h2>Service Form</h2>
-	<form action="<? print $_SERVER['PHP_SELF']; ?>" method="post" id="frmRegister" enctype="multipart/form-data">
+	<form action="<? print $_SERVER['PHP_SELF']; ?>" method="post" id="frmService" enctype="multipart/form-data">
+		<p>Below you will be able to fill out the form to create a tech support ticket. You will be asked for your first name and last name. You will also be asked for your email address and a good contact phone number. In addition to that, you will also be asked for your physical home address, including: street, city, state, and zip code. Lastly, you will be asked for a short description of your issue. Remember, you will have to explain this to the technician when one is assigned to you, so don’t take too much time on the short description.</p>
+		
+		<p>Once you are done filling in the form, you will be shown the information that you have just submitted to our ticketing system. This acts as a confirmation for you that the ticket has been successfully submitted. A copy of your information is also emailed to you. From there you can view your Service ID number, which will allow you to look up any updates to your service ticket.</p>
 		<p><b>Required fields are marked in <span class="required"> red </span> and with an asterisks (*). </b><p>
 		
 		<!-- Creates First Name text box for user input -->
@@ -387,7 +402,7 @@ if (isset($_POST["btnSubmit"])){
 		<!-- Creates Short Description text area for user input -->
 		<!-- Must be in a single line for the placeholder tag to work -->
 		<fieldset>
-			<label for="txtDescription" class="required">Short Description *</label>
+			<label for="txtShortDescription" class="required">Short Description *</label>
 				<br>
 			<textarea placeholder="Please enter a short description" rows="4" cols="50" id="txtShortDescription" name="txtShortDescription" maxlength="40"  <?php if($shortDescriptionERROR) echo 'class="mistake"' ?>><?php echo $shortDescription; ?></textarea>
 		</fieldset>

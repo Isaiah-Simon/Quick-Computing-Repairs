@@ -11,13 +11,14 @@ $debug=false;
 
 $serviceNum="";
 $submittedBy="";
+$shortDescription="";
 $status="";
 $updates="";
 $update="";
 $updateTime="";
 
-$baseURL = "http://www.uvm.edu/~isimon/cs148/assignment7.1/";
-$yourURL = $baseURL . "search.php";
+$baseURL = "https://www.uvm.edu/~isimon/cs148/assignment7.1";
+$yourURL = $baseURL . "/loginRequired/search.php";
 
 //initialize flags for errors, one for each item
 $serviceNumERROR = false;
@@ -88,7 +89,7 @@ if (isset($_POST["btnSubmit"])){
    
 	// Retrieve the information
     // 
-		$sql = "SELECT fldSubmittedBy,fldStatus FROM tblService WHERE pkserviceNum=" . $serviceNum; 
+		$sql = "SELECT fldSubmittedBy,fldStatus,fldShortDescription FROM tblService WHERE pkserviceNum=" . $serviceNum; 
             $stmt = $db->prepare($sql); 
             $stmt->execute(); 
 
@@ -96,6 +97,7 @@ if (isset($_POST["btnSubmit"])){
              
             $submittedBy = $result["fldSubmittedBy"];
 			$status = $result["fldStatus"];
+			$shortDescription = $result["fldShortDescription"];
 			
 		
 			
@@ -113,7 +115,7 @@ if (isset($_POST["btnSubmit"])){
 
 <? include ("top.php"); ?>
  
- <body id="form">
+ <body id="search">
  
  <section id="bgColor" class="rounded-corners border">
  <? include ("header.php"); ?>
@@ -127,6 +129,7 @@ if (isset($_POST["btnSubmit"])){
  // 
         if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { 
             if (!empty($submittedBy)) { 
+			print "<p><b>Short Description:</b><i>   " . $shortDescription . "</i></p>";
 			print "<p><b>Submitted By:</b><i>   " . $submittedBy . "</i></p>";
 			print "<p><b>Status:</b><i>   " . $status . "</i></p>";
 			print "<p><b>Updates:<i> Most recent updates are shown first</i></b></p></p>";
@@ -160,9 +163,10 @@ if (isset($_POST["btnSubmit"])){
      } 
      ?>
  </section>
-   <h2>Service Form</h2>
+   <h2>Search</h2>
    <form action="<? print $_SERVER['PHP_SELF']; ?>" method="post" id="frmRegister" enctype="multipart/form-data">
-     <p><b>Required fields are marked in <span class="required"> red </span> and with an asterisks (*). </b><p>
+		<p>Below you will be able to search by your Service ID Number that was emailed to you when you submitted your initial service ticket request. Once you input your Service ID Number, you will be able to view the short description, status and updates to your service ticket.</p>
+		<p><b>Required fields are marked in <span class="required"> red </span> and with an asterisks (*). </b><p>
      
      <!-- Creates First Name text box for user input -->
      <fieldset>               
@@ -170,7 +174,7 @@ if (isset($_POST["btnSubmit"])){
         <input type="text" id="txtserviceNum" name="txtserviceNum" value="<?php echo $serviceNum; ?>" tabindex="1"
            size="25" maxlength="45" placeholder="Please enter your Service ID" <?php if($serviceNumERROR) echo 'class="mistake"' ?>
            onfocus="this.select()" />
-           
+    </fieldset>     
      <!-- Creates Submit and Reset Button for user input -->
      <section id="submit">
        <fieldset style="border: none;">               
@@ -189,5 +193,4 @@ if (isset($_POST["btnSubmit"])){
  </section>
  
  <?php } //ends form submitted ok ?>
- </body>
  </html>
